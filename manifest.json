@@ -1,0 +1,25 @@
+{
+    "name": "Genesis Helper",
+    "version": "1.0",
+    "description": "Helper extension for Genesis",
+    "manifest_version": 2,
+    "permissions": ["activeTab", "declarativeContent"],
+
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+
+    "content_scripts":
+        [
+            {
+                "matches": ["https://students.livingston.org/*"],
+                "js": ["jquery-3.3.1.min.js", "content_scripts/course.js"],
+                "run_at": "document_end"
+            }
+        ],
+
+    "page_action": {
+      "default_popup": "popup/popup.html"
+    }
+}
