@@ -1,15 +1,18 @@
 function getGrade() {
-    var grade = $("body > div:nth-child(10) > b").text();
+    var grade = $("body>div:nth-child(10)>b").text();
     return grade;
 }
 
 function getCategories() {
-    if ($("body > table.notecard > tbody > tr:nth-child(2) > td > div > table > tbody > tr:nth-child(10) > td > div > table > tbody").length != 1) {
+	var rows = $("td").filter(function() {
+		return $(this).text() == "Category" && $(this).siblings().length == 1;
+	}).parent().siblings();
+
+    if (rows.length < 1) {
         return null;
     }
 
     var names = [];
-    var rows = $("body > table.notecard > tbody > tr:nth-child(2) > td > div > table > tbody > tr:nth-child(10) > td > div > table > tbody > tr");
     rows.each(function() {
         if (!$(this).hasClass("listheading")) {
             var name = $(this).find("td").eq(0).text();
@@ -21,11 +24,8 @@ function getCategories() {
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, callback) {
-        if (request.type == "grade") {
-            callback(getGrade());
+        if (request.type == "request") {
+            callback({type: "Course Page", categories: getCategories()});
         }
-
-        if (request.type == "categories") {
-            callback(getCategories());
-        }
-    });
+    }
+);

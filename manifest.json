@@ -3,7 +3,7 @@
     "version": "1.0",
     "description": "Helper extension for Genesis",
     "manifest_version": 2,
-    "permissions": ["activeTab", "declarativeContent"],
+    "permissions": ["activeTab", "declarativeContent", "storage"],
 
     "background": {
         "scripts": ["background.js"],
