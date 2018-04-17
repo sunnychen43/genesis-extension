@@ -12,14 +12,15 @@ function getCategories() {
         return null;
     }
 
-    var names = [];
+    var categories = [];
     rows.each(function() {
         if (!$(this).hasClass("listheading")) {
             var name = $(this).find("td").eq(0).text();
-            names.push(name);
+            var percentage = parseInt($(this).find("td").eq(1).text())/100;
+            categories.push([name, percentage]);
         }
     });
-    return names;
+    return categories;
 }
 
 function getPoints() {
@@ -34,17 +35,25 @@ function getPoints() {
         }
     });
 
+    var pointsArray = [];
     var rows = header.siblings();
+
+    var a = 0;
+    var b = 0;
 
     rows.each(function() {
         if(!$(this).hasClass("listheading") && String($(this).attr("class")).includes("listrow")) {
             var percentRegex = /(?:100\.|\d{2}\.)\d+%/g;
 
-            //Returns cleaned text of grade
-            //$(this).children().eq(gradeIndex).text().replace(/\s/g,'').replace(percentRegex,'');
+            var pointEntry = $(this).children().eq(gradeIndex).text().replace(/(?:\s|Recently Updated)/g,'').replace(percentRegex,'').split("/");
+
+            pointsArray.push([+pointEntry[0], +pointEntry[1]])
+            a += +pointEntry[0];
+            b += +pointEntry[1];
         }
     });
-    return "done";
+    alert(a/b);
+    return pointsArray;
 }
 
 chrome.runtime.onMessage.addListener(
@@ -54,4 +63,5 @@ chrome.runtime.onMessage.addListener(
         }
     }
 );
-alert(getPoints());
+
+getPoints();

@@ -1,4 +1,8 @@
-$(document).ready(function() {
+$(document).ready(function () {
+    load();
+});
+
+function load() {
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, {type: "request"}, (response) => {
             $("#type").text(response.type);
@@ -11,10 +15,10 @@ $(document).ready(function() {
                 let sel = $("#category");
                 $.each(response.categories, (index, value) => {
                     sel.append($("<option></option>")
-                        .attr("value",value)
-                        .text(value)); 
+                        .attr("value",value[1])
+                        .text(value[0])); 
                 });
             }
         });
     });
-});
+}
