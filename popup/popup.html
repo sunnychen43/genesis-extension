@@ -3,6 +3,7 @@
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <style type="text/css">
         body {
             min-width: 300px;
@@ -15,7 +16,6 @@
             width: 50%;
         }
     </style>
-    
 </head>
 
 <body>
@@ -23,17 +23,31 @@
         <div style="float:left; padding-right: 8px;"><b>Page Type:</b></div>
         <div id="type">Test</div>
     </div>
-    <div class="form-group">
-        <label for="targetGrade">Grade you want:</label>
-        <input type="text" class="form-control" id="targetGrade">
+
+    <div id="courseContainer" style="display: none;">
+        <div class="form-group">
+            <label for="targetGrade">Grade you want:</label>
+            <input type="text" class="form-control" id="targetGrade">
+        </div>
+
+        <div class="form-group">
+            <label for="pointValue">Point value:</label>
+            <input type="text" class="form-control" id="pointValue">
+        </div>
+
+        <div class="form-group" id="categoryDiv">
+            <label for="category">Type of grade:</label>
+            <select class="form-control" id="category">
+            </select>
+        </div>
+
+        <button class="btn btn-primary" id="button">Calculate</button>
+        <div id="resultContainer" style="padding-top: 10px;">
+            <div id="grade"></div>
+            <div id="percentage"></div>
+        </div>
     </div>
-    <div class="form-group" id="categoryDiv">
-        <label for="category">Type of grade:</label>
-        <select class="form-control" id="category">
-        </select>
-    </div>
-    <button class="btn btn-primary" id="button">Calculate</button>
-    <div id="grade"></div>
+
     <script src="../jquery-3.3.1.min.js"></script>
     <script src="popup.js"></script>
 </body>

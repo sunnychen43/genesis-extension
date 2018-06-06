@@ -12,12 +12,12 @@ function getCategories() {
         return null;
     }
 
-    var categories = [];
+    var categories = {};
     rows.each(function() {
         if (!$(this).hasClass("listheading")) {
             var name = $(this).find("td").eq(0).text();
             var percentage = parseInt($(this).find("td").eq(1).text())/100;
-            categories.push([name, percentage]);
+            categories[name] = percentage;
         }
     });
     return categories;
@@ -35,33 +35,59 @@ function getPoints() {
         }
     });
 
-    var pointsArray = [];
-    var rows = header.siblings();
-
-    var a = 0;
-    var b = 0;
-
-    rows.each(function() {
-        if(!$(this).hasClass("listheading") && String($(this).attr("class")).includes("listrow")) {
-            var percentRegex = /(?:100\.|\d{2}\.)\d+%/g;
-
-            var pointEntry = $(this).children().eq(gradeIndex).text().replace(/(?:\s|Recently Updated)/g,'').replace(percentRegex,'').split("/");
-
-            pointsArray.push([+pointEntry[0], +pointEntry[1]])
-            a += +pointEntry[0];
-            b += +pointEntry[1];
+    var categoryIndex;
+    header.children().each(function() {
+        if($(this).text().includes("Category")) {
+            categoryIndex = $(this).index();
         }
     });
-    alert(a/b);
-    return pointsArray;
+
+    var categories = getCategories();
+
+    if (categories != null) {
+        var scores = {};
+        var totals = {};
+
+        for (var cat in categories) {
+            if (categories.hasOwnProperty(cat)) {
+                scores[cat] = 0;
+                totals[cat] = 0;
+            }
+        }
+    }
+    
+    else {
+        var scores = 0;
+        var totals = 0;
+    }
+
+
+    var rows = header.siblings();
+    rows.each(function() {
+        if(!$(this).hasClass("listheading") && String($(this).attr("class")).includes("listrow")) {
+            var regexp = /[\d,.]+/g;
+            var matches = $(this).children().eq(gradeIndex).text().match(regexp);
+            $(this).children().eq(categoryIndex).find("div").remove();
+            var category = $(this).children().eq(categoryIndex).text().replace(/(?<!\w)\s|\s(?!\w)/g,'');
+            
+            if (categories != null) {
+                scores[category] += +matches[0];
+                totals[category] += +matches[1];
+            }
+            else {
+                scores += +matches[0];
+                totals += +matches[1];
+            }
+        }
+    });
+
+    return [scores, totals];
 }
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, callback) {
         if (request.type == "request") {
-            callback({type: "Course Page", categories: getCategories()});
+            callback({type: "Course Page", categories: getCategories(), points: getPoints()});
         }
     }
 );
-
-getPoints();
