@@ -21,7 +21,7 @@
 <body>
     <div style="padding-bottom: 10px;">
         <div style="float:left; padding-right: 8px;"><b>Page Type:</b></div>
-        <div id="type">Test</div>
+        <div id="type">Invalid Page</div>
     </div>
 
     <div id="courseContainer" style="display: none;">
@@ -43,8 +43,14 @@
 
         <button class="btn btn-primary" id="button">Calculate</button>
         <div id="resultContainer" style="padding-top: 10px;">
-            <div id="grade"></div>
-            <div id="percentage"></div>
+            <div>
+                <div class="d-inline">Points you need: </div>
+                <div id="grade" class="d-inline data"></div>
+            </div>
+            <div>
+                <div class="d-inline">Percent you need: </div>
+                <div id="percentage" class="d-inline data"></div>
+            </div>
         </div>
     </div>
 

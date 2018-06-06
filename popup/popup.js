@@ -76,9 +76,41 @@ function submit() {
     else {
         points = calculate(target, total);
     }
+    var percentage = points/total*100;
+
+    // Round to 2 dp
+    points = +points.toFixed(2);
+    percentage = +percentage.toFixed(2);
 
     $("#grade").text(points);
-    $("#percentage").text(points/total*100 + "%");
+    $("#percentage").text(percentage + "%");
+
+    var colors = getColor(percentage);
+    $("#resultContainer").find(".data").css("color", "rgb(" + colors[0] + "," + colors[1] + ",0)");
+}
+
+function getColor(grade) {
+    var red = 0;
+    var green = 220;
+
+    // Cap below 100
+    grade = Math.min(grade, 100);
+    // Cap above 60
+    grade = Math.max(grade, 60);
+
+    // Scale to 0-40
+    grade -= 60;
+    // Max red and reduce green
+    if (grade > 20) {
+        red = 220;
+        green -= (grade-20)*11;
+    }
+    // Increase red
+    else {
+        red += grade*11;
+    }
+
+    return [red, green];
 }
 
 $(document).ready(function () {
