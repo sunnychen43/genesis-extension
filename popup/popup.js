@@ -5,7 +5,9 @@ var categories;
 function load() {
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, {type: "request"}, (response) => {
-            $("#type").text(response.type);
+            if (response != undefined) {
+                $("#defaultMessage").hide();
+            }
 
             if (response.type == "Course Page") {
                 $("#courseContainer").show();
@@ -82,7 +84,7 @@ function submit() {
     points = +points.toFixed(2);
     percentage = +percentage.toFixed(2);
 
-    $("#grade").text(points);
+    $("#grade").text(points + "/" + total);
     $("#percentage").text(percentage + "%");
 
     var colors = getColor(percentage);

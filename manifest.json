@@ -21,5 +21,10 @@
 
     "page_action": {
       "default_popup": "popup/popup.html"
+    },
+
+    "icons": {
+        "48": "assets/48.png",
+        "128": "assets/128.png"
     }
 }
